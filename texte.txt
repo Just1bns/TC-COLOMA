@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de note de bar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .user-input, .date-input {
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .product-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .product-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr; /* Répartition des colonnes */
+            align-items: center;
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .product-name {
+            font-weight: bold;
+        }
+        .price {
+            text-align: right; /* Aligner les prix à droite */
+        }
+        .quantity-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: flex-end; /* Aligner les boutons à droite */
+        }
+        .quantity-buttons button {
+            padding: 5px 10px;
+            font-size: 12px;
+            background-color: #FF9900; /* Couleur orange (terre battue) */
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .quantity-buttons button:hover {
+            background-color: #FF7F00; /* Teinte plus foncée au survol */
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        li {
+            background: #f1f1f1;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .total {
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+        }
+        .pay-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #FF9900; /* Couleur orange (terre battue) */
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .pay-button:hover {
+            background-color: #FF7F00; /* Teinte plus foncée au survol */
+        }
+        .confirmation-message {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gestion de note de bar</h1>
+
+        <!-- Champ pour identifier la personne -->
+        <div class="user-input">
+            <label for="userName">Nom et Prénom / Équipe des Visiteurs :</label>
+            <input type="text" id="userName" placeholder="Entrez votre nom ou l'équipe" required>
+        </div>
+
+        <!-- Champ pour indiquer la date de la note -->
+        <div class="date-input">
+            <label for="noteDate">Date de la note :</label>
+            <input type="date" id="noteDate" required>
+        </div>
+
+        <!-- Liste des produits avec boutons "+" et "-" -->
+        <div class="product-list" id="productList">
+            <div class="product-item" data-product="Coca-Cola:1.50">
+                <span class="product-name">Coca-Cola</span>
+                <span class="price">1.50 €</span>
+                <div class="quantity-buttons">
+                    <button class="decrease-btn">-</button>
+                    <span class="quantity">0</span>
+                    <button class="increase-btn">+</button>
+                </div>
+            </div>
+            <div class="product-item" data-product="Eau minérale:2.00">
+                <span class="product-name">Eau minérale</span>
+                <span class="price">2.00 €</span>
+                <div class="quantity-buttons">
+                    <button class="decrease-btn">-</button>
+                    <span class="quantity">0</span>
+                    <button class="increase-btn">+</button>
+                </div>
+            </div>
+            <div class="product-item" data-product="Bière:5.00">
+                <span class="product-name">Bière</span>
+                <span class="price">5.00 €</span>
+                <div class="quantity-buttons">
+                    <button class="decrease-btn">-</button>
+                    <span class="quantity">0</span>
+                    <button class="increase-btn">+</button>
+                </div>
+            </div>
+            <div class="product-item" data-product="Vin rouge:6.00">
+                <span class="product-name">Vin rouge</span>
+                <span class="price">6.00 €</span>
+                <div class="quantity-buttons">
+                    <button class="decrease-btn">-</button>
+                    <span class="quantity">0</span>
+                    <button class="increase-btn">+</button>
+                </div>
+            </div>
+            <div class="product-item" data-product="Whisky:10.00">
+                <span class="product-name">Whisky</span>
+                <span class="price">10.00 €</span>
+                <div class="quantity-buttons">
+                    <button class="decrease-btn">-</button>
+                    <span class="quantity">0</span>
+                    <button class="increase-btn">+</button>
+                </div>
+            </div>
+            <div class="product-item" data-product="Jus d'orange:3.00">
+                <span class="product-name">Jus d'orange</span>
+                <span class="price">3.00 €</span>
+                <div class="quantity-buttons">
+                    <button class="decrease-btn">-</button>
+                    <span class="quantity">0</span>
+                    <button class="increase-btn">+</button>
+                </div>
+            </div>
+            <div class="product-item" data-product="Cocktail:6.00">
+                <span class="product-name">Cocktail</span>
+                <span class="price">6.00 €</span>
+                <div class="quantity-buttons">
+                    <button class="decrease-btn">-</button>
+                    <span class="quantity">0</span>
+                    <button class="increase-btn">+</button>
+                </div>
+            </div>
+            <div class="product-item" data-product="Chips Paprika:2.50">
+                <span class="product-name">Chips Paprika</span>
+                <span class="price">2.50 €</span>
+                <div class="quantity-buttons">
+                    <button class="decrease-btn">-</button>
+                    <span class="quantity">0</span>
+                    <button class="increase-btn">+</button>
+                </div>
+            </div>
+            <div class="product-item" data-product="Chips Ketchup:2.30">
+                <span class="product-name">Chips Ketchup</span>
+                <span class="price">2.30 €</span>
+                <div class="quantity-buttons">
+                    <button class="decrease-btn">-</button>
+                    <span class="quantity">0</span>
+                    <button class="increase-btn">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Affichage du total -->
+        <div class="total" id="totalAmount">Total: 0 €</div>
+
+        <!-- Bouton Payer -->
+        <button class="pay-button" id="payButton">Payer avec Payconiq</button>
+
+        <!-- Message de confirmation -->
+        <div class="confirmation-message" id="confirmationMessage">
+            Redirection vers Payconiq en cours...
+        </div>
+    </div>
+
+    <script>
+        const productList = document.getElementById('productList');
+        const totalElement = document.getElementById('totalAmount');
+        const userNameInput = document.getElementById('userName');
+        const payButton = document.getElementById('payButton');
+        const confirmationMessage = document.getElementById('confirmationMessage');
+        const noteDateInput = document.getElementById('noteDate');
+
+        // Initialisation des quantités pour chaque produit
+        const products = Array.from(productList.getElementsByClassName('product-item')).map(item => {
+            const [name, price] = item.dataset.product.split(':');
+            return { name, price: parseFloat(price), quantity: 0 };
+        });
+
+        // Fonction pour mettre à jour le total
+        function updateTotal() {
+            const total = products.reduce((acc, product) => acc + (product.price * product.quantity), 0);
+            totalElement.textContent = `Total: ${total.toFixed(2)} €`;
+        }
+
+        // Ajout des écouteurs d'événements pour les boutons "+" et "-"
+        productList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('increase-btn')) {
+                const parent = e.target.closest('.product-item');
+                const index = Array.from(productList.children).indexOf(parent);
+                products[index].quantity++;
+                parent.querySelector('.quantity').textContent = products[index].quantity;
+                updateTotal();
+            } else if (e.target.classList.contains('decrease-btn')) {
+                const parent = e.target.closest('.product-item');
+                const index = Array.from(productList.children).indexOf(parent);
+                if (products[index].quantity > 0) {
+                    products[index].quantity--;
+                    parent.querySelector('.quantity').textContent = products[index].quantity;
+                    updateTotal();
+                }
+            }
+        });
+
+        // Initialisation du total
+        updateTotal();
+
+        // Afficher le nom de la personne dans le total (optionnel)
+        userNameInput.addEventListener('input', () => {
+            const userName = userNameInput.value.trim();
+            if (userName) {
+                totalElement.textContent = `${userName}, Total: ${totalElement.textContent.split(': ')[1]}`;
+            } else {
+                totalElement.textContent = `Total: ${totalElement.textContent.split(': ')[1]}`;
+            }
+        });
+
+        // Gestion du clic sur le bouton "Payer"
+        payButton.addEventListener('click', () => {
+            const userName = userNameInput.value.trim();
+            const noteDate = noteDateInput.value;
+            const total = parseFloat(totalElement.textContent.split(': ')[1].replace('€', '').trim());
+
+            if (!userName) {
+                alert("Veuillez entrer votre nom ou l'équipe avant de payer.");
+                return;
+            }
+
+            if (!noteDate) {
+                alert("Veuillez sélectionner une date pour la note.");
+                return;
+            }
+
+            if (total <= 0) {
+                alert("Votre panier est vide. Ajoutez des produits avant de payer.");
+                return;
+            }
+
+            // Afficher le message de confirmation
+            confirmationMessage.style.display = 'block';
+
+            // Simuler une redirection vers Payconiq après 2 secondes
+            setTimeout(() => {
+                window.location.href = `https://www.payconiq.com?amount=${total}&user=${encodeURIComponent(userName)}&date=${noteDate}`;
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
